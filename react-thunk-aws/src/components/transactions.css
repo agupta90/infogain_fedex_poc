@@ -1,0 +1,9 @@
+.table-css {
+    margin: auto !important;
+}
+
+@media screen and (max-width: 768px){
+    .table-css {
+        margin: auto !important;
+    }
+}
