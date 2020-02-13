@@ -10,7 +10,7 @@ const initialState = {
 };
 
 export default function rewardsReducer(state = initialState, action) {
-  let { FETCH_USER_REWARDS, FETCH_USER_REWARDS_SUCCESS, FETCH_USER_REWARDS_FAILURE } = ActionConstant;
+  let { FETCH_USER_REWARDS, FETCH_USER_REWARDS_SUCCESS, FETCH_USER_REWARDS_FAILURE, UPDATE_ACTIVE_MONTH } = ActionConstant;
   switch (action.type) {
     case FETCH_USER_REWARDS:
       return {
@@ -33,6 +33,13 @@ export default function rewardsReducer(state = initialState, action) {
         ...state,
         isLoading: false,
         error: action.payload.error
+      };
+
+    case UPDATE_ACTIVE_MONTH:
+      return {
+        ...state,
+        isLoading: false,
+        activeMonth: action.payload.activeMonth
       };
 
     default:

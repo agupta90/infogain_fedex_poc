@@ -9,9 +9,7 @@ export const fetchRewards = (userId = 'michael') => {
 		return fetch(`${baseURL}rewards?user=${userId}`)
 			.then(res => res.json())
 			.then(json => {
-				setTimeout(() => {
-					dispatch(fetchUserRewardsSuccess(json.response.totalRewardPoints, json.response.activeMonth, json.response.rewardsPerMonth));
-				}, 3000)
+				dispatch(fetchUserRewardsSuccess(json.response.totalRewardPoints, json.response.activeMonth, json.response.rewardsPerMonth));
 				return {activeMonth: json.response.activeMonth, rewardsPerMonth: json.response.rewardsPerMonth} ;
 			})
 			.then(({activeMonth, rewardsPerMonth})=> {
@@ -20,7 +18,7 @@ export const fetchRewards = (userId = 'michael') => {
 						 return reward;
 					}
 				})
-				dispatch(fetchTransactionsCount('michael', transactionFilter[0].filter))
+				dispatch(fetchTransactions('michael', "1."+transactionFilter[0].filter))
 			})
 			.catch(error => dispatch(fetchUserRewardsFailure(error)));
 	};
@@ -40,47 +38,13 @@ export const fetchUserRewardsFailure = (error) => ({
 	payload: { error }
 });
 
-export const fetchTransactionsCount = (userId = 'michael', filter) => {
-	let batch = "*."+filter;
-	return dispatch => {
-		dispatch(fetchUserTransactionsCount());
-		return fetch(`${baseURL}transactions?user=${userId}&batch=${batch}`)
-			.then(res => res.json())
-			.then(json => {
-				setTimeout(() => {
-					dispatch(fetchUserTransactionsCountSuccess(json.response));
-				}, 3000)
-			})
-			.then(
-				dispatch(fetchTransactions('michael', "1."+filter))
-			)
-			.catch(error => dispatch(fetchUserTransactionsCountFailure(error)));
-	};
-}
-
-export const fetchUserTransactionsCount = () => ({
-	type: ActionConstant.FETCH_USER_TRANSACTIONS_COUNT
-});
-
-export const fetchUserTransactionsCountSuccess = (transactionsCount) => ({
-	type: ActionConstant.FETCH_USER_TRANSACTIONS_SUCCESS_COUNT,
-	payload: { transactionsCount }
-});
-
-export const fetchUserTransactionsCountFailure = (error) => ({
-	type: ActionConstant.FETCH_USER_TRANSACTIONS_FAILURE_COUNT,
-	payload: { error }
-});
-
 export const fetchTransactions = (userId = 'michael', batch) => {
 	return dispatch => {
 		dispatch(fetchUserTransactions());
 		return fetch(`${baseURL}transactions?user=${userId}&batch=${batch}`)
 			.then(res => res.json())
 			.then(json => {
-				setTimeout(() => {
-					dispatch(fetchUserTransactionsSuccess(json.response));
-				}, 3000)
+				dispatch(fetchUserTransactionsSuccess(json.response));
 			})
 			.catch(error => dispatch(fetchUserTransactionsFailure(error)));
 	};
@@ -98,4 +62,10 @@ export const fetchUserTransactionsSuccess = (transactions) => ({
 export const fetchUserTransactionsFailure = (error) => ({
 	type: ActionConstant.FETCH_USER_TRANSACTIONS_FAILURE,
 	payload: { error }
+});
+
+
+export const updateActiveMonth = (activeMonth) => ({
+	type: ActionConstant.UPDATE_ACTIVE_MONTH,
+	payload: { activeMonth }
 });

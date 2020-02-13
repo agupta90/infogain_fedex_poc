@@ -1,8 +1,8 @@
 import ActionConstant from '../../constants/action';
 
 const initialState = {
-  transactionsCount: '',
   transactions: [],
+  visibleTransactions:[],
   isLoading: false,
   error: null,
   userId: 'michael',
@@ -10,29 +10,8 @@ const initialState = {
 };
 
 export default function transactionsReducer(state = initialState, action) {
-  let { FETCH_USER_TRANSACTIONS, FETCH_USER_TRANSACTIONS_SUCCESS, FETCH_USER_TRANSACTIONS_FAILURE, FETCH_USER_TRANSACTIONS_COUNT, FETCH_USER_TRANSACTIONS_SUCCESS_COUNT, FETCH_USER_TRANSACTIONS_FAILURE_COUNT } = ActionConstant;
-  switch (action.type) {
-    case FETCH_USER_TRANSACTIONS_COUNT:
-      return {
-        ...state,
-        isLoading: true,
-        error: null
-      };
-
-    case FETCH_USER_TRANSACTIONS_SUCCESS_COUNT:
-      return {
-        ...state,
-        isLoading: false,
-        transactionsCount: action.payload.transactionsCount,
-      };
-
-    case FETCH_USER_TRANSACTIONS_FAILURE_COUNT:
-      return {
-        ...state,
-        isLoading: false,
-        error: action.payload.error
-      };
-      
+  let { FETCH_USER_TRANSACTIONS, FETCH_USER_TRANSACTIONS_SUCCESS, FETCH_USER_TRANSACTIONS_FAILURE } = ActionConstant;
+  switch (action.type) {     
     case FETCH_USER_TRANSACTIONS:
       return {
         ...state,
@@ -41,10 +20,12 @@ export default function transactionsReducer(state = initialState, action) {
       };
 
     case FETCH_USER_TRANSACTIONS_SUCCESS:
+      console.log(state);
       return {
         ...state,
         isLoading: false,
         transactions: [...state.transactions, ...action.payload.transactions],
+        visibleTransactions: action.payload.transactions
       };
 
     case FETCH_USER_TRANSACTIONS_FAILURE:
