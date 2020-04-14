@@ -50,6 +50,8 @@ function TransactionsTable(props) {
               <StyledTableCell align="right">Txn Rewards</StyledTableCell>
             </TableRow>
           </TableHead>
+          { 
+          props.transactions.length > 0 ?
           <TableBody>
             {props.transactions.map(row => (
               <StyledTableRow key={row.transactionId}>
@@ -61,6 +63,9 @@ function TransactionsTable(props) {
               </StyledTableRow>
             ))}
           </TableBody>
+          :
+          <TableBody><StyledTableRow><h5>&nbsp;&nbsp;No transactions available for this month</h5></StyledTableRow></TableBody>
+        }
         </Table>
         <Pagination
           className="MuiButton-textSecondary"
